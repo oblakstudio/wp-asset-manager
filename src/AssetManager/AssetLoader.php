@@ -27,7 +27,9 @@ class AssetLoader
 
         $this->manifest = new JsonManifest(
             $data['dist_path'].'/assets.json',
-            $data['dist_uri']);
+            $data['dist_uri'],
+            $data['dist_path']
+        );
 
         add_action(AssetManager::getHook(), [&$this, 'loadStyles'], $data['priority']);
         add_action(AssetManager::getHook(), [&$this, 'loadScripts'], $data['priority']);
@@ -84,6 +86,11 @@ class AssetLoader
     public function getUri(string $asset) : string
     {
         return $this->manifest->getUri($asset);
+    }
+
+    public function getPath(string $asset) : string
+    {
+        return $this->manifest->getPath($asset);
     }
 
 }
