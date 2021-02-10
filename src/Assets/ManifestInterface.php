@@ -14,28 +14,20 @@ interface ManifestInterface
      *
      * If the manifest does not have an entry for $asset, then return $asset
      *
-     * @param  string $asset The original name of the file before cache-busting
-     * @return string        Cache busted filename
+     * @param string $asset The original name of the file before cache-busting
+     * @return string
      */
-    public function get(string $asset) : string;
+    public function get($asset);
 
     /**
      * Get the cache-busted URI
      *
      * If the manifest does not have an entry for $asset, then return URI for $asset
      *
-     * @param  string $asset The original name of the file before cache-busting
-     * @return string        Cache busted URI
+     * @param string $asset The original name of the file before cache-busting
+     * @return string
      */
-    public function getUri(string $asset) : string;
+    public function getUri($asset);
 
-    /**
-     * Get the cache-busted filepath
-     * 
-     * If the manifest does not have an entry for $asset, then return filepath for $asset
-     * 
-     * @param  string $asset The original name of the file before cache-busting
-     * @return string        Cache busted filepath
-     */
-    public function getPath(string $asset) : string;
+    public function getPath($asset);
 }

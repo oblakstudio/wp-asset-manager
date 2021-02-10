@@ -56,7 +56,7 @@ class AssetManager
     public function registerNamespace(string $name, array $args)
     {
 
-        $this->namespaces[$name] = $args;        
+        $this->namespaces[$name] = $args;
 
     }
 
@@ -74,6 +74,11 @@ class AssetManager
     public function getUri(string $namespace, string $asset) : string
     {
         return $this->loaders[$namespace]->getUri($asset);
+    }
+
+    public function getPath(string $namespace, string $asset) : string
+    {
+        return $this->loaders[$namespace]->getPath($asset);
     }
 
 }

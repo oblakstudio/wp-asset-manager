@@ -28,7 +28,7 @@ class AssetLoader
         $this->manifest = new JsonManifest(
             $data['dist_path'].'/assets.json',
             $data['dist_uri'],
-            $data['dist_path']
+            $data['dist_path'],
         );
 
         add_action(AssetManager::getHook(), [&$this, 'loadStyles'], $data['priority']);
