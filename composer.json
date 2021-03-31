@@ -4,7 +4,7 @@
     "version": "3.0",
     "autoload": {
         "psr-4": {
-            "Oblak\\Asset": "src/"
+            "Oblak\\Asset\\": "src/"
         }
     }
 }
