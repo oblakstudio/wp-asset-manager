@@ -1,13 +1,12 @@
 <?php
 
-namespace Oblak\Assets;
-
+namespace Oblak\Asset;
 /**
- * Class JsonManifest
+ * Class Manifest
  * @package Roots\Sage
  * @author QWp6t
  */
-class JsonManifest implements ManifestInterface
+class Manifest implements ManifestInterface
 {
     /** @var array */
     public $manifest;

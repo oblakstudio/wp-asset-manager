@@ -1,19 +1,21 @@
 <?php
 
-namespace Oblak\AssetManager;
+namespace Oblak\Asset;
 
-use Oblak\Assets\JsonManifest;
-
-class AssetLoader
+class Loader implements LoaderInterface
 {
 
-    private $namespace;
+    private static ?string $hook = null;
 
-    private $version;
+    private static ?string $context = null;
 
-    private $assets;
+    private string $namespace;
 
-    private JsonManifest $manifest;
+    private string $version;
+
+    private array $assets;
+
+    private Manifest $manifest;
 
     public function __construct(string $namespace, array $data)
     {
@@ -22,17 +24,19 @@ class AssetLoader
         $this->version   = $data['version'];
         $this->assets    = $data['assets'];
 
-        foreach ($data as $var => $val)
-            $this->$var = $val;
-
         $this->manifest = new JsonManifest(
             $data['dist_path'].'/assets.json',
             $data['dist_uri'],
             $data['dist_path'],
         );
 
-        add_action(AssetManager::getHook(), [&$this, 'loadStyles'], $data['priority']);
-        add_action(AssetManager::getHook(), [&$this, 'loadScripts'], $data['priority']);
+        if ( is_null(self::$hook) ) :
+            self::$hook = (!is_admin())  ? 'wp_enqueue_scripts' : 'admin_enqueue_scripts';
+            self::$context = ( !is_admin() ) ? 'front' : 'admin';
+        endif;
+
+        add_action(self::$hook, [&$this, 'loadStyles'], $data['priority']);
+        add_action(self::$hook, [&$this, 'loadScripts'], $data['priority']);
 
     }
 
@@ -40,18 +44,16 @@ class AssetLoader
     {
 
         $load_styles = apply_filters("{$this->namespace}/load_styles", true);
-        $context     = (is_admin()) ? 'admin' : 'front';
 
         if (!$load_styles)
             return;
 
-        foreach ($this->assets[$context]['styles'] as $style) :
+        foreach ($this->assets[self::$context]['styles'] as $style) :
 
             $basename = basename($style);
-            $handler  = $this->namespace . '/' . $basename;
+            $handler  = "{$this->namespace}/{$basename}";
 
             wp_register_style($handler, $this->manifest->getUri($style));
-
             wp_enqueue_style($handler);
 
         endforeach;
@@ -62,21 +64,17 @@ class AssetLoader
     {
 
         $load_scripts = apply_filters("{$this->namespace}/load_scripts", true);
-        $context     = (is_admin()) ? 'admin' : 'front';
 
         if (!$load_scripts)
             return;
 
-        foreach ($this->assets[$context]['scripts'] as $script) :
-
+        foreach ($this->assets[self::$context]['scripts'] as $script) :
 
             $basename = basename($script);
-            $handler  = $this->namespace . '/' . $basename;
+            $handler  = "{$this->namespace}/{$basename}";
 
             wp_register_script($handler, $this->manifest->getUri($script), [], $this->version, true);
-
             do_action("{$this->namespace}/localize/$basename");
-
             wp_enqueue_script($handler);
 
         endforeach;

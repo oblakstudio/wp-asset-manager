@@ -1,7 +1,6 @@
 <?php
 
-namespace Oblak\Assets;
-
+namespace Oblak\Asset;
 /**
  * Interface ManifestInterface
  * @package Roots\Sage
@@ -14,7 +13,7 @@ interface ManifestInterface
      *
      * If the manifest does not have an entry for $asset, then return $asset
      *
-     * @param string $asset The original name of the file before cache-busting
+     * @param  string $asset The original name of the file before cache-busting
      * @return string
      */
     public function get($asset);
@@ -29,5 +28,13 @@ interface ManifestInterface
      */
     public function getUri($asset);
 
+    /**
+     * Get the cache-busted path
+     * 
+     * If the manifest does not have an entry for $asset, then return URI for $asset
+     *
+     * @param  string $asset The original name of the file before cache-busting
+     * @return string
+     */
     public function getPath($asset);
 }
