@@ -1,7 +1,7 @@
 {
     "name": "oblak/wp-asset-manager",
     "description": "Handles loading of Wordpress Theme and plugin assets",
-    "version": "3.2",
+    "version": "3.3",
     "autoload": {
         "psr-4": {
             "Oblak\\Asset\\": "src/"

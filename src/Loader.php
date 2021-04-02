@@ -23,8 +23,9 @@ class Loader implements LoaderInterface
         $this->namespace = $namespace;
         $this->version   = $data['version'];
         $this->assets    = $data['assets'];
+        $this->priority  = $data['priority'];
 
-        $this->manifest = new JsonManifest(
+        $this->manifest = new Manifest(
             $data['dist_path'].'/assets.json',
             $data['dist_uri'],
             $data['dist_path'],
@@ -35,9 +36,14 @@ class Loader implements LoaderInterface
             self::$context = ( !is_admin() ) ? 'front' : 'admin';
         endif;
 
-        add_action(self::$hook, [&$this, 'loadStyles'], $data['priority']);
-        add_action(self::$hook, [&$this, 'loadScripts'], $data['priority']);
+       
 
+    }
+
+    public function run()
+    {
+        add_action(self::$hook, [&$this, 'loadStyles'], $this->priority);
+        add_action(self::$hook, [&$this, 'loadScripts'], $this->priority);
     }
 
     public function loadStyles()
